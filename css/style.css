@@ -94,16 +94,10 @@ header {
     border-image: linear-gradient(to right, var(--primary-light), var(--primary-color), var(--primary-light)) 1;
 }
 
-.logo {
+.header-title {
     display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo-img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 header h1 {
@@ -118,30 +112,19 @@ header h1 {
 
 header h1:before {
     content: "🛡️";
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
+    margin-right: 8px;
 }
 
 .version-badge {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    color: var(--text-secondary);
+    padding: 2px 0;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+    margin-top: 2px;
 }
 
 .version-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    color: var(--primary-color);
 }
 
 .en-name {
@@ -557,29 +540,36 @@ header h1:before {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .container {
-        padding: 1rem;
+        width: 100%;
+        padding: 10px;
     }
-    
+
     header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+        align-items: center;
+        padding: 10px 0 15px;
+        margin-bottom: 1.5rem;
     }
-    
+
+    .header-title {
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
     header h1 {
         font-size: 1.8rem;
-        padding-right: 1.3rem;
+        text-align: center;
+        padding-right: 0;
+        margin-bottom: 2px;
     }
-    
+
     header h1:before {
-        font-size: 1.3rem;
+        margin-right: 5px;
     }
-    
+
     .version-badge {
-        top: 10px;
-        left: 10px;
-        font-size: 0.7rem;
-        padding: 3px 8px;
+        font-size: 0.8rem;
+        text-align: center;
     }
     
     .search-filter {
