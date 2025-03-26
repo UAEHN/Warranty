@@ -93,22 +93,36 @@ header {
     border-bottom: 1px solid var(--border-color);
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
 header h1 {
     font-size: 2rem;
     color: var(--primary-color);
     font-weight: 700;
     letter-spacing: -0.5px;
-    position: relative;
-    padding-right: 1.5rem;
 }
 
-header h1:before {
-    content: "🛡️";
+.version-badge {
     position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
+    top: 10px;
+    right: 20px;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .en-name {
@@ -118,6 +132,16 @@ header h1:before {
     display: inline-block;
     margin-right: 0.3rem;
     opacity: 0.8;
+}
+
+/* ===== FOOTER ===== */
+.site-footer {
+    margin-top: 2rem;
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 /* ===== SEARCH & FILTER ===== */
@@ -523,29 +547,39 @@ header h1:before {
         gap: 1rem;
     }
     
-    header h1 {
-        font-size: 1.75rem;
-        padding-right: 1.3rem;
+    .logo {
+        align-items: center;
+        margin-bottom: 0.5rem;
     }
     
-    header h1:before {
-        font-size: 1.3rem;
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo-img {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .version-badge {
+        top: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+        padding: 3px 8px;
     }
     
     .search-filter {
         flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
+        align-items: stretch;
     }
     
     .search-box {
-        width: 100%;
         max-width: none;
+        width: 100%;
     }
     
     .filter-options {
         width: 100%;
-        margin-top: 0.75rem;
     }
     
     .filter-options select {
@@ -554,30 +588,24 @@ header h1:before {
     
     .devices-container {
         grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .device-card {
-        padding: 1.25rem;
     }
     
     .modal-content {
-        max-width: calc(100vw - 2rem);
+        width: 95%;
     }
     
     .form-actions {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
     }
     
     .form-actions button {
         width: 100%;
-        justify-content: center;
     }
     
     .confirm-actions {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
     }
     
     .confirm-actions button {
@@ -585,7 +613,7 @@ header h1:before {
     }
     
     .form-group {
-        margin-bottom: 1.25rem;
+        margin-bottom: 1rem;
     }
     
     .info-item {
@@ -593,7 +621,12 @@ header h1:before {
     }
     
     .device-notes {
-        max-height: 80px;
+        font-size: 0.85rem;
+    }
+    
+    .site-footer {
+        margin-top: 1.5rem;
+        font-size: 0.8rem;
     }
 }
 
