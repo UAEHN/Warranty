@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>ضمان | Warranty - حافظ على ضمانات أجهزتك</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ضمان <span class="en-name">Warranty</span></h1>
+            <button id="add-device" class="btn-primary"><i class="fas fa-plus"></i> إضافة جهاز جديد</button>
+        </header>
+
+        <main>
+            <div class="search-filter">
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="بحث عن جهاز...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="filter-options">
+                    <select id="sort-by">
+                        <option value="name">ترتيب حسب الاسم</option>
+                        <option value="purchase-date">ترتيب حسب تاريخ الشراء</option>
+                        <option value="expiry">ترتيب حسب انتهاء الضمان</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="devices-container" id="devices-list">
+                <!-- الأجهزة ستضاف هنا من خلال JavaScript -->
+                <div class="empty-state" id="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>لم تقم بإضافة أي أجهزة بعد</p>
+                    <button class="btn-secondary" id="add-first-device">إضافة أول جهاز</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- نافذة منبثقة لإضافة/تعديل جهاز -->
+    <div class="modal" id="device-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">إضافة جهاز جديد</h2>
+                <button id="close-modal" class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="device-form">
+                <div class="form-group">
+                    <label for="device-name">اسم الجهاز*</label>
+                    <input type="text" id="device-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="purchase-date">تاريخ الشراء*</label>
+                    <input type="date" id="purchase-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="warranty-length">مدة الضمان (بالأشهر)*</label>
+                    <input type="number" id="warranty-length" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="purchase-location">مكان الشراء</label>
+                    <input type="text" id="purchase-location">
+                </div>
+                <div class="form-group">
+                    <label for="serial-number">الرقم التسلسلي</label>
+                    <input type="text" id="serial-number">
+                </div>
+                <div class="form-group">
+                    <label for="price">السعر</label>
+                    <input type="number" id="price" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="notes">ملاحظات</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="device-image">صورة الجهاز</label>
+                    <input type="file" id="device-image" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">حفظ</button>
+                    <button type="button" id="cancel-btn" class="btn-secondary">إلغاء</button>
+                </div>
+                <input type="hidden" id="device-id">
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة لتأكيد الحذف -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تأكيد الحذف</h2>
+                <button id="close-confirm-modal" class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="confirm-body">
+                <p>هل أنت متأكد من رغبتك في حذف هذا الجهاز؟</p>
+                <div class="confirm-actions">
+                    <button id="confirm-delete" class="btn-danger">حذف</button>
+                    <button id="cancel-delete" class="btn-secondary">إلغاء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 
