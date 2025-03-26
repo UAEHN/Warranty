@@ -139,7 +139,7 @@ function createDeviceCard(device) {
                         <i class="fas fa-eye"></i> عرض
                     </button>
                     <button class="action-link download-invoice" data-image="${device.invoiceImage}" data-name="${device.name}">
-                        <i class="fas fa-download"></i> تحميل
+                        <i class="fas fa-download"></i> تحميل للطباعة
                     </button>
                 </div>
             </div>
@@ -179,7 +179,7 @@ function createDeviceCard(device) {
     
     if (downloadInvoiceBtn) {
         downloadInvoiceBtn.addEventListener('click', function() {
-            downloadImage(this.dataset.image, `فاتورة ${device.name}`);
+            downloadImage(this.dataset.image, `فاتورة_${device.name}`);
         });
     }
     
@@ -514,9 +514,6 @@ function viewImage(imageSrc, title) {
             <div class="image-container">
                 <img src="${imageSrc}" alt="${title}" id="printable-image">
             </div>
-            <div class="modal-footer">
-                <button class="btn-primary print-btn"><i class="fas fa-print"></i> طباعة الفاتورة</button>
-            </div>
         </div>
     `;
     
@@ -526,15 +523,10 @@ function viewImage(imageSrc, title) {
     
     // Add event listeners
     const closeBtn = modal.querySelector('.close-btn');
-    const printBtn = modal.querySelector('.print-btn');
     
     closeBtn.addEventListener('click', () => {
         modal.remove();
         document.body.style.overflow = '';
-    });
-    
-    printBtn.addEventListener('click', () => {
-        printImage(imageSrc, title);
     });
     
     // Close on click outside
@@ -544,59 +536,6 @@ function viewImage(imageSrc, title) {
             document.body.style.overflow = '';
         }
     });
-}
-
-// Print image
-function printImage(imageSrc, title) {
-    const printWindow = window.open('', '_blank');
-    
-    printWindow.document.write(`
-        <html>
-        <head>
-            <title>طباعة ${title}</title>
-            <style>
-                body {
-                    margin: 0;
-                    padding: 20px;
-                    font-family: 'Tajawal', Arial, sans-serif;
-                    text-align: center;
-                    direction: rtl;
-                }
-                h1 {
-                    font-size: 18px;
-                    margin-bottom: 20px;
-                    color: #333;
-                }
-                img {
-                    max-width: 100%;
-                    max-height: 90vh;
-                }
-                @media print {
-                    @page {
-                        size: auto;
-                        margin: 10mm;
-                    }
-                    body {
-                        padding: 0;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <h1>${title}</h1>
-            <img src="${imageSrc}" alt="${title}">
-            <script>
-                window.onload = function() {
-                    setTimeout(function() {
-                        window.print();
-                    }, 500);
-                };
-            </script>
-        </body>
-        </html>
-    `);
-    
-    printWindow.document.close();
 }
 
 // Download image
