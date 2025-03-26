@@ -95,18 +95,7 @@ function createDeviceCard(device) {
     // Calculate warranty status
     const warrantyInfo = calculateWarrantyStatus(device);
     
-    // Create image element if device has image
-    let imageHtml = '';
-    if (device.image) {
-        imageHtml = `<img src="${device.image}" alt="${device.name}" class="device-image">`;
-    } else {
-        imageHtml = `<div class="device-image" style="display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-mobile-alt" style="font-size: 2.5rem; opacity: 0.5;"></i>
-                     </div>`;
-    }
-    
     deviceCard.innerHTML = `
-        ${imageHtml}
         <div class="device-header">
             <h3 class="device-name">${device.name}</h3>
             <div class="device-actions">
@@ -138,7 +127,30 @@ function createDeviceCard(device) {
             ${device.price ? `
             <div class="info-item">
                 <i class="fas fa-tag"></i>
-                <span><span class="info-label">السعر:</span> ${device.price} ريال</span>
+                <span><span class="info-label">السعر:</span> ${device.price} درهم</span>
+            </div>
+            ` : ''}
+            ${device.invoiceImage ? `
+            <div class="info-item">
+                <i class="fas fa-file-invoice"></i>
+                <span class="info-label">الفاتورة:</span>
+                <div class="invoice-actions">
+                    <button class="action-link view-invoice-image" data-image="${device.invoiceImage}">
+                        <i class="fas fa-eye"></i> عرض
+                    </button>
+                    <button class="action-link download-invoice" data-image="${device.invoiceImage}" data-name="${device.name}">
+                        <i class="fas fa-download"></i> تحميل
+                    </button>
+                </div>
+            </div>
+            ` : ''}
+            ${device.notes && device.notes.trim() ? `
+            <div class="info-item notes-item">
+                <i class="fas fa-sticky-note"></i>
+                <div class="notes-content">
+                    <span class="info-label">ملاحظات:</span>
+                    <p class="device-notes">${device.notes}</p>
+                </div>
             </div>
             ` : ''}
             <div class="warranty-status ${warrantyInfo.class}">
@@ -154,6 +166,22 @@ function createDeviceCard(device) {
     
     editBtn.addEventListener('click', () => openEditDeviceModal(device.id));
     deleteBtn.addEventListener('click', () => openDeleteConfirmModal(device.id));
+    
+    // Add image view and download listeners
+    const viewInvoiceImageBtn = deviceCard.querySelector('.view-invoice-image');
+    const downloadInvoiceBtn = deviceCard.querySelector('.download-invoice');
+    
+    if (viewInvoiceImageBtn) {
+        viewInvoiceImageBtn.addEventListener('click', function() {
+            viewImage(this.dataset.image, `فاتورة ${device.name}`);
+        });
+    }
+    
+    if (downloadInvoiceBtn) {
+        downloadInvoiceBtn.addEventListener('click', function() {
+            downloadImage(this.dataset.image, `فاتورة ${device.name}`);
+        });
+    }
     
     return deviceCard;
 }
@@ -281,16 +309,16 @@ function handleFormSubmit(e) {
     const serialNumber = document.getElementById('serial-number').value;
     const price = document.getElementById('price').value;
     const notes = document.getElementById('notes').value;
-    const deviceImage = document.getElementById('device-image');
+    const invoiceImage = document.getElementById('invoice-image');
     
-    // Process image if provided
-    let imagePromise = Promise.resolve(null);
-    if (deviceImage.files.length > 0) {
-        imagePromise = processImage(deviceImage.files[0]);
+    // Process invoice image if provided
+    let invoiceImagePromise = Promise.resolve(null);
+    if (invoiceImage.files.length > 0) {
+        invoiceImagePromise = processImage(invoiceImage.files[0]);
     }
     
     // Wait for image processing
-    imagePromise.then(imageDataUrl => {
+    invoiceImagePromise.then((invoiceImageData) => {
         if (currentDeviceId) {
             // Update existing device
             const deviceIndex = devices.findIndex(d => d.id === currentDeviceId);
@@ -308,8 +336,8 @@ function handleFormSubmit(e) {
                     updatedAt: new Date().toISOString()
                 };
                 
-                if (imageDataUrl) {
-                    updatedDevice.image = imageDataUrl;
+                if (invoiceImageData) {
+                    updatedDevice.invoiceImage = invoiceImageData;
                 }
                 
                 devices[deviceIndex] = updatedDevice;
@@ -325,7 +353,7 @@ function handleFormSubmit(e) {
                 serialNumber,
                 price,
                 notes,
-                image: imageDataUrl,
+                invoiceImage: invoiceImageData,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
@@ -469,6 +497,114 @@ function calculateWarrantyEndDate(device) {
     const purchaseDate = new Date(device.purchaseDate);
     const warrantyLengthMs = device.warrantyLength * 30 * 24 * 60 * 60 * 1000;
     return new Date(purchaseDate.getTime() + warrantyLengthMs);
+}
+
+// View image in full screen modal
+function viewImage(imageSrc, title) {
+    // Create modal elements
+    const modal = document.createElement('div');
+    modal.className = 'modal image-view-modal active';
+    
+    modal.innerHTML = `
+        <div class="modal-content image-modal-content">
+            <div class="modal-header">
+                <h2>${title}</h2>
+                <button class="close-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="image-container">
+                <img src="${imageSrc}" alt="${title}" id="printable-image">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary print-btn"><i class="fas fa-print"></i> طباعة الفاتورة</button>
+            </div>
+        </div>
+    `;
+    
+    // Add to body
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+    
+    // Add event listeners
+    const closeBtn = modal.querySelector('.close-btn');
+    const printBtn = modal.querySelector('.print-btn');
+    
+    closeBtn.addEventListener('click', () => {
+        modal.remove();
+        document.body.style.overflow = '';
+    });
+    
+    printBtn.addEventListener('click', () => {
+        printImage(imageSrc, title);
+    });
+    
+    // Close on click outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// Print image
+function printImage(imageSrc, title) {
+    const printWindow = window.open('', '_blank');
+    
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>طباعة ${title}</title>
+            <style>
+                body {
+                    margin: 0;
+                    padding: 20px;
+                    font-family: 'Tajawal', Arial, sans-serif;
+                    text-align: center;
+                    direction: rtl;
+                }
+                h1 {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                    color: #333;
+                }
+                img {
+                    max-width: 100%;
+                    max-height: 90vh;
+                }
+                @media print {
+                    @page {
+                        size: auto;
+                        margin: 10mm;
+                    }
+                    body {
+                        padding: 0;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <h1>${title}</h1>
+            <img src="${imageSrc}" alt="${title}">
+            <script>
+                window.onload = function() {
+                    setTimeout(function() {
+                        window.print();
+                    }, 500);
+                };
+            </script>
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+}
+
+// Download image
+function downloadImage(imageSrc, fileName) {
+    const link = document.createElement('a');
+    link.href = imageSrc;
+    link.download = `${fileName}.jpg`;
+    link.click();
 }
 
 // Initialize app when DOM is loaded
