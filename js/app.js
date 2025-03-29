@@ -22,12 +22,6 @@ let deleteDeviceId = null;
 
 // Initialize app
 function init() {
-    // Asegurarse de que los botones de backup sean visibles inmediatamente
-    ensureBackupButtonsVisibility();
-
-    // إعادة ترتيب العناصر مباشرة في DOM
-    reorderHeaderElements();
-    
     // ضبط ارتفاع شاشة الجوال
     setMobileViewportHeight();
     window.addEventListener('resize', setMobileViewportHeight);
@@ -62,9 +56,9 @@ function init() {
     });
     if (importFile) importFile.addEventListener('change', importData);
     
-    // Comprobar periódicamente la visibilidad de los botones
+    // ضمان ظهور أزرار التصدير والاستيراد في الهاتف
+    ensureBackupButtonsVisibility();
     window.addEventListener('resize', ensureBackupButtonsVisibility);
-    window.addEventListener('resize', reorderHeaderElements);
 }
 
 // إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
@@ -705,144 +699,25 @@ function ensureBackupButtonsVisibility() {
     const backupButtons = document.querySelector('.backup-buttons');
     const exportBtn = document.getElementById('export-data');
     const importBtn = document.getElementById('import-data');
-    const siteLogo = document.querySelector('.site-logo');
-    const headerActions = document.querySelector('.header-actions');
     
     if (backupButtons) {
         backupButtons.style.display = 'flex';
         backupButtons.style.visibility = 'visible';
         backupButtons.style.opacity = '1';
-        backupButtons.style.zIndex = '9999';
-        backupButtons.style.position = 'relative';
-        backupButtons.style.pointerEvents = 'auto';
-        
-        // Asegurarse de que esté en la capa superior para dispositivos móviles
-        if (window.innerWidth <= 768) {
-            // Forzar la visibilidad en dispositivos móviles
-            backupButtons.style.width = '100%';
-            backupButtons.style.marginTop = '10px';
-            backupButtons.style.marginBottom = '5px';
-        }
     }
     
     if (exportBtn) {
         exportBtn.style.display = 'flex';
         exportBtn.style.visibility = 'visible';
         exportBtn.style.opacity = '1';
-        exportBtn.style.zIndex = '9999';
-        exportBtn.style.position = 'relative';
-        exportBtn.style.pointerEvents = 'auto';
-        exportBtn.style.backgroundColor = 'white';
-        exportBtn.style.border = '1px solid var(--border-color)';
-        exportBtn.style.minHeight = '38px';
-        
-        // Forzar la visibilidad en dispositivos móviles
-        if (window.innerWidth <= 768) {
-            exportBtn.style.flex = '1';
-            exportBtn.style.padding = '0.3rem 0.5rem';
-            exportBtn.style.fontSize = '0.8rem';
-            exportBtn.style.whiteSpace = 'nowrap';
-        }
     }
     
     if (importBtn) {
         importBtn.style.display = 'flex';
         importBtn.style.visibility = 'visible';
         importBtn.style.opacity = '1';
-        importBtn.style.zIndex = '9999';
-        importBtn.style.position = 'relative';
-        importBtn.style.pointerEvents = 'auto';
-        importBtn.style.backgroundColor = 'white';
-        importBtn.style.border = '1px solid var(--border-color)';
-        importBtn.style.minHeight = '38px';
-        
-        // Forzar la visibilidad en dispositivos móviles
-        if (window.innerWidth <= 768) {
-            importBtn.style.flex = '1';
-            importBtn.style.padding = '0.3rem 0.5rem';
-            importBtn.style.fontSize = '0.8rem';
-            importBtn.style.whiteSpace = 'nowrap';
-        }
-    }
-    
-    // ضمان ظهور الشعار والأزرار بالترتيب الصحيح على الهواتف
-    if (window.innerWidth <= 768) {
-        if (siteLogo) {
-            siteLogo.style.order = '-1';
-            siteLogo.style.marginBottom = '15px';
-            siteLogo.style.width = '100%';
-        }
-        
-        if (headerActions) {
-            headerActions.style.order = '1';
-            headerActions.style.width = '100%';
-        }
     }
 }
 
-// دالة لإعادة ترتيب عناصر الهيدر في DOM
-function reorderHeaderElements() {
-    const header = document.querySelector('header');
-    const siteLogo = document.querySelector('.site-logo');
-    const headerActions = document.querySelector('.header-actions');
-    
-    if (header && siteLogo && headerActions) {
-        // تنفيذ إعادة الترتيب بغض النظر عن حجم الشاشة لضمان التناسق
-        try {
-            // إزالة جميع العناصر وإعادة إضافتها بالترتيب الصحيح
-            // نحفظ العناصر أولاً لتجنب فقدانها عند إزالتها
-            const logoClone = siteLogo.cloneNode(true);
-            const actionsClone = headerActions.cloneNode(true);
-            
-            while (header.firstChild) {
-                header.removeChild(header.firstChild);
-            }
-            
-            // إضافة الشعار أولاً
-            header.appendChild(logoClone);
-            
-            // ثم إضافة الأزرار
-            header.appendChild(actionsClone);
-            
-            // تطبيق أنماط CSS
-            header.style.display = 'flex';
-            header.style.flexDirection = 'column';
-            header.style.alignItems = 'center';
-            
-            // تعيين ترتيب العناصر
-            logoClone.style.order = '-1';
-            logoClone.style.marginBottom = '15px';
-            logoClone.style.width = '100%';
-            
-            actionsClone.style.order = '1';
-            actionsClone.style.width = '100%';
-            
-            // إعادة إضافة مستمعات الأحداث للأزرار
-            const exportBtn = actionsClone.querySelector('#export-data');
-            const importBtn = actionsClone.querySelector('#import-data');
-            const importFile = actionsClone.querySelector('#import-file');
-            const addDeviceBtn = actionsClone.querySelector('#add-device');
-            
-            if (exportBtn) exportBtn.addEventListener('click', exportData);
-            if (importBtn) importBtn.addEventListener('click', () => {
-                importFile.click();
-            });
-            if (importFile) importFile.addEventListener('change', importData);
-            if (addDeviceBtn) addDeviceBtn.addEventListener('click', openAddDeviceModal);
-            
-            // تطبيق أنماط إضافية للموبايل
-            ensureBackupButtonsVisibility();
-        } catch (e) {
-            console.error('خطأ في إعادة ترتيب العناصر:', e);
-        }
-    }
-}
-
-// تنفيذ عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    init();
-    reorderHeaderElements();
-});
-
-// تنفيذ عند تغيير حجم النافذة
-window.addEventListener('resize', reorderHeaderElements); 
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', init); 

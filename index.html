@@ -33,8 +33,7 @@
 <body>
     <div class="container">
         <header>
-            <!-- الشعار سيكون أولاً -->
-            <div class="site-logo" style="order: -1 !important; margin-bottom: 15px !important; width: 100%;">
+            <div class="site-logo">
                 <div class="logo-wrapper">
                     <img src="./img/icon-192x192.png" alt="ضمان" class="site-logo-icon">
                     <div class="site-logo-text">
@@ -44,12 +43,11 @@
                 </div>
                 <div class="version-badge">الإصدار 1.0</div>
             </div>
-            <!-- الأزرار ستكون بعد ذلك -->
-            <div class="header-actions" style="order: 1 !important; width: 100% !important;">
+            <div class="header-actions">
                 <button id="add-device" class="btn-primary"><i class="fas fa-plus"></i> إضافة جهاز جديد</button>
-                <div class="backup-buttons" style="display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: relative !important;">
-                    <button id="export-data" class="btn-secondary backup-btn" aria-label="تصدير البيانات" style="display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: relative !important; cursor: pointer !important;"><i class="fas fa-download"></i> تصدير البيانات</button>
-                    <button id="import-data" class="btn-secondary backup-btn" aria-label="استيراد البيانات" style="display: flex !important; visibility: visible !important; opacity: 1 !important; z-index: 9999 !important; position: relative !important; cursor: pointer !important;"><i class="fas fa-upload"></i> استيراد البيانات</button>
+                <div class="backup-buttons">
+                    <button id="export-data" class="btn-secondary backup-btn" aria-label="تصدير البيانات"><i class="fas fa-download"></i> تصدير البيانات</button>
+                    <button id="import-data" class="btn-secondary backup-btn" aria-label="استيراد البيانات"><i class="fas fa-upload"></i> استيراد البيانات</button>
                     <input type="file" id="import-file" accept=".json" style="display: none;">
                 </div>
             </div>
