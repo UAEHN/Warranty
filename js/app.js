@@ -14,6 +14,7 @@ const confirmDeleteBtn = document.getElementById('confirm-delete');
 const cancelDeleteBtn = document.getElementById('cancel-delete');
 const searchInput = document.getElementById('search');
 const sortBySelect = document.getElementById('sort-by');
+const splashScreen = document.getElementById('splash-screen');
 
 // State
 let devices = JSON.parse(localStorage.getItem('devices')) || [];
@@ -22,6 +23,9 @@ let deleteDeviceId = null;
 
 // Initialize app
 function init() {
+    // إدارة شاشة البداية
+    handleSplashScreen();
+    
     // Asegurarse de que los botones de backup sean visibles inmediatamente
     ensureBackupButtonsVisibility();
 
@@ -65,6 +69,21 @@ function init() {
     // Comprobar periódicamente la visibilidad de los botones
     window.addEventListener('resize', ensureBackupButtonsVisibility);
     window.addEventListener('resize', reorderHeaderElements);
+}
+
+// إدارة شاشة البداية
+function handleSplashScreen() {
+    if (splashScreen) {
+        // كود شاشة البداية - تختفي بعد 4 ثوانٍ
+        setTimeout(() => {
+            splashScreen.classList.add('hidden');
+            
+            // إزالة شاشة البداية من DOM بعد انتهاء التأثير
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+            }, 500);
+        }, 4000);
+    }
 }
 
 // إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
