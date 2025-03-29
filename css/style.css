@@ -550,6 +550,72 @@ header {
     gap: 1rem;
 }
 
+/* ===== BACKUP BUTTONS ===== */
+.backup-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.backup-btn {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.7rem;
+}
+
+/* ===== NOTIFICATIONS ===== */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 0;
+    z-index: 1100;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.notification.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+}
+
+.notification p {
+    flex: 1;
+    margin: 0;
+    margin-left: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.close-notification {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.5rem;
+}
+
+.notification.success {
+    border-right: 4px solid var(--success-color);
+}
+
+.notification.error {
+    border-right: 4px solid var(--danger-color);
+}
+
+.notification.info {
+    border-right: 4px solid var(--primary-color);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .container {
@@ -659,6 +725,22 @@ header {
         margin-top: 1.5rem;
         font-size: 0.8rem;
     }
+
+    .backup-buttons {
+        flex-direction: row;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .backup-btn {
+        flex: 1;
+    }
+    
+    .notification {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -732,6 +814,10 @@ header {
         font-size: 0.85rem;
         padding: 0.4rem;
         max-height: 70px;
+    }
+
+    .backup-buttons {
+        flex-direction: row;
     }
 }
 

@@ -44,6 +44,161 @@ function init() {
     
     searchInput.addEventListener('input', filterDevices);
     sortBySelect.addEventListener('change', sortDevices);
+
+    // إضافة زر النسخ الاحتياطي واستيراد البيانات إلى العنوان
+    addBackupButtons();
+}
+
+// إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
+function addBackupButtons() {
+    // إنشاء زر النسخ الاحتياطي
+    const backupBtnContainer = document.createElement('div');
+    backupBtnContainer.className = 'backup-buttons';
+    
+    backupBtnContainer.innerHTML = `
+        <button id="export-data" class="btn-secondary backup-btn"><i class="fas fa-download"></i> تصدير البيانات</button>
+        <button id="import-data" class="btn-secondary backup-btn"><i class="fas fa-upload"></i> استيراد البيانات</button>
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+    `;
+    
+    // إضافة الأزرار إلى العنوان
+    const header = document.querySelector('header');
+    header.appendChild(backupBtnContainer);
+    
+    // إضافة مستمعي الأحداث للأزرار
+    document.getElementById('export-data').addEventListener('click', exportData);
+    document.getElementById('import-data').addEventListener('click', () => {
+        document.getElementById('import-file').click();
+    });
+    document.getElementById('import-file').addEventListener('change', importData);
+}
+
+// تصدير البيانات
+function exportData() {
+    // إنشاء كائن يحتوي على البيانات للتصدير
+    const exportData = {
+        devices: devices,
+        exportDate: new Date().toISOString(),
+        version: '1.0'
+    };
+    
+    // تحويل الكائن إلى نص JSON
+    const jsonData = JSON.stringify(exportData, null, 2);
+    
+    // إنشاء رابط تنزيل
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    // إنشاء عنصر رابط للتنزيل
+    const a = document.createElement('a');
+    a.href = url;
+    
+    // إنشاء اسم ملف يحتوي على التاريخ الحالي
+    const date = new Date();
+    const dateStr = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+    a.download = `warranty-backup-${dateStr}.json`;
+    
+    // إضافة الرابط إلى المستند وتنزيل الملف
+    document.body.appendChild(a);
+    a.click();
+    
+    // تنظيف الروابط
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+    
+    // عرض رسالة نجاح
+    showNotification('تم تصدير البيانات بنجاح!', 'success');
+}
+
+// استيراد البيانات
+function importData(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(event) {
+        try {
+            // تحليل البيانات من ملف JSON
+            const importedData = JSON.parse(event.target.result);
+            
+            // التحقق من صحة البيانات
+            if (!importedData.devices || !Array.isArray(importedData.devices)) {
+                throw new Error('تنسيق ملف غير صالح');
+            }
+            
+            // عرض نافذة تأكيد للمستخدم
+            if (confirm('سيتم استبدال جميع بياناتك الحالية بالبيانات المستوردة. هل أنت متأكد؟')) {
+                // تحديث البيانات
+                devices = importedData.devices;
+                
+                // حفظ البيانات في localStorage
+                saveDevices();
+                
+                // تحديث واجهة المستخدم
+                renderDevices();
+                
+                // عرض رسالة نجاح
+                showNotification('تم استيراد البيانات بنجاح!', 'success');
+            }
+        } catch (error) {
+            // عرض رسالة خطأ
+            showNotification('حدث خطأ أثناء استيراد البيانات. الرجاء التحقق من الملف.', 'error');
+            console.error('Error importing data:', error);
+        }
+        
+        // إعادة تعيين حقل الملف
+        e.target.value = '';
+    };
+    
+    reader.onerror = function() {
+        showNotification('حدث خطأ أثناء قراءة الملف.', 'error');
+    };
+    
+    reader.readAsText(file);
+}
+
+// عرض إشعار للمستخدم
+function showNotification(message, type = 'info') {
+    // إنشاء عنصر الإشعار
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <p>${message}</p>
+            <button class="close-notification"><i class="fas fa-times"></i></button>
+        </div>
+    `;
+    
+    // إضافة الإشعار إلى المستند
+    document.body.appendChild(notification);
+    
+    // إظهار الإشعار بتأثير
+    setTimeout(() => {
+        notification.classList.add('active');
+    }, 10);
+    
+    // إضافة مستمع حدث لزر الإغلاق
+    notification.querySelector('.close-notification').addEventListener('click', () => {
+        closeNotification(notification);
+    });
+    
+    // إغلاق الإشعار تلقائيًا بعد 5 ثوانٍ
+    setTimeout(() => {
+        closeNotification(notification);
+    }, 5000);
+}
+
+// إغلاق الإشعار بتأثير
+function closeNotification(notification) {
+    notification.classList.remove('active');
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 300);
 }
 
 // ضبط ارتفاع شاشة الجوال لمعالجة مشكلة شريط العناوين في المتصفح

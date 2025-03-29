@@ -63,6 +63,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Handle backup file downloads separately
+  if (event.request.url.includes('backup-') && event.request.url.endsWith('.json')) {
+    return; // Let the browser handle JSON downloads directly
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
