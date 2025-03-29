@@ -658,32 +658,32 @@ header {
     }
 
     header {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px 0 15px;
-        margin-bottom: 1.5rem;
-        gap: 15px;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 10px 0 15px !important;
+        margin-bottom: 1.5rem !important;
+        gap: 15px !important;
         position: relative !important;
         z-index: 996 !important;
     }
 
     .site-logo {
-        align-items: center;
-        margin-bottom: 15px;
-        order: 1;
+        order: -1 !important;
+        align-items: center !important;
+        margin-bottom: 15px !important;
+        width: 100% !important;
     }
 
     .header-actions {
-        position: relative !important;
-        z-index: 997 !important;
-        min-height: 100px !important;
-        padding-bottom: 10px !important;
+        order: 1 !important;
         width: 100% !important;
-        order: 2;
+        min-height: auto !important;
+        margin-top: 0 !important;
     }
 
     #add-device {
-        width: 100%;
+        width: 100% !important;
     }
 
     .logo-wrapper {
@@ -818,13 +818,15 @@ header {
     }
     
     .site-logo {
-        order: 1 !important; /* جعل الشعار أولاً */
+        order: -1 !important;
         margin-bottom: 10px !important;
+        width: 100% !important;
     }
     
     .header-actions {
-        order: 2 !important; /* جعل الأزرار بعد الشعار */
+        order: 1 !important;
         min-height: auto !important;
+        width: 100% !important;
     }
     
     .device-name {
@@ -885,7 +887,7 @@ header {
     .backup-buttons {
         flex-direction: row !important;
         margin-top: 8px !important;
-        z-index: 9999 !important; /* زيادة z-index للتأكد من الظهور */
+        z-index: 9999 !important;
         min-height: 38px !important;
         display: flex !important;
         visibility: visible !important;
@@ -896,7 +898,7 @@ header {
         font-size: 0.75rem !important;
         padding: 0.25rem 0.5rem !important;
         min-height: 36px !important;
-        z-index: 9999 !important; /* زيادة z-index للتأكد من الظهور */
+        z-index: 9999 !important;
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -923,13 +925,13 @@ header {
 }
 
 .touch-device input[type="file"] {
-    font-size: 16px; /* لمنع التكبير التلقائي للنموذج على الأجهزة المحمولة */
+    font-size: 16px;
 }
 
 .touch-device input, 
 .touch-device select, 
 .touch-device textarea {
-    font-size: 16px; /* لمنع التكبير التلقائي للنموذج على الأجهزة المحمولة */
+    font-size: 16px;
 }
 
 /* النوافذ المنبثقة لعرض الصور */

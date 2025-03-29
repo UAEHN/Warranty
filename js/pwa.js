@@ -11,6 +11,43 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+// ضمان عدم تدخل نافذة التثبيت مع ترتيب العناصر
+function ensurePWAPromptDoesNotInterfere() {
+  const header = document.querySelector('header');
+  const container = document.querySelector('.container');
+  const installPrompt = document.querySelector('.pwa-install-prompt');
+  
+  if (installPrompt && window.innerWidth <= 768) {
+    // إضافة هامش علوي للرأس إذا كانت نافذة التثبيت ظاهرة
+    if (header) {
+      header.style.marginTop = '60px';
+    }
+  } else {
+    // إزالة الهامش العلوي إذا لم تكن نافذة التثبيت ظاهرة
+    if (header) {
+      header.style.marginTop = '0';
+    }
+  }
+  
+  // تأكيد الترتيب الصحيح للعناصر
+  const siteLogo = document.querySelector('.site-logo');
+  const headerActions = document.querySelector('.header-actions');
+  
+  if (siteLogo) {
+    siteLogo.style.order = '-1';
+    siteLogo.style.marginBottom = '15px';
+  }
+  
+  if (headerActions) {
+    headerActions.style.order = '1';
+  }
+}
+
+// تنفيذ عند تحميل الصفحة وتغيير حجم النافذة
+window.addEventListener('load', ensurePWAPromptDoesNotInterfere);
+window.addEventListener('resize', ensurePWAPromptDoesNotInterfere);
+window.addEventListener('scroll', ensurePWAPromptDoesNotInterfere);
+
 // Add PWA install prompt
 let deferredPrompt;
 const addBtn = document.createElement('button');
