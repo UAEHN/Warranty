@@ -46,11 +46,19 @@ function init() {
     sortBySelect.addEventListener('change', sortDevices);
 
     // إضافة مستمعي الأحداث لأزرار النسخ الاحتياطي
-    document.getElementById('export-data').addEventListener('click', exportData);
-    document.getElementById('import-data').addEventListener('click', () => {
+    const exportBtn = document.getElementById('export-data');
+    const importBtn = document.getElementById('import-data');
+    const importFile = document.getElementById('import-file');
+    
+    if (exportBtn) exportBtn.addEventListener('click', exportData);
+    if (importBtn) importBtn.addEventListener('click', () => {
         document.getElementById('import-file').click();
     });
-    document.getElementById('import-file').addEventListener('change', importData);
+    if (importFile) importFile.addEventListener('change', importData);
+    
+    // ضمان ظهور أزرار التصدير والاستيراد في الهاتف
+    ensureBackupButtonsVisibility();
+    window.addEventListener('resize', ensureBackupButtonsVisibility);
 }
 
 // إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
@@ -684,6 +692,31 @@ function downloadImage(imageSrc, fileName) {
     link.href = imageSrc;
     link.download = `${fileName}.jpg`;
     link.click();
+}
+
+// ضمان ظهور أزرار النسخ الاحتياطي على الهاتف
+function ensureBackupButtonsVisibility() {
+    const backupButtons = document.querySelector('.backup-buttons');
+    const exportBtn = document.getElementById('export-data');
+    const importBtn = document.getElementById('import-data');
+    
+    if (backupButtons) {
+        backupButtons.style.display = 'flex';
+        backupButtons.style.visibility = 'visible';
+        backupButtons.style.opacity = '1';
+    }
+    
+    if (exportBtn) {
+        exportBtn.style.display = 'flex';
+        exportBtn.style.visibility = 'visible';
+        exportBtn.style.opacity = '1';
+    }
+    
+    if (importBtn) {
+        importBtn.style.display = 'flex';
+        importBtn.style.visibility = 'visible';
+        importBtn.style.opacity = '1';
+    }
 }
 
 // Initialize app when DOM is loaded

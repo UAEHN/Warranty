@@ -562,21 +562,29 @@ header {
 
 /* ===== BACKUP BUTTONS ===== */
 .backup-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    width: 100%;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 0.5rem !important;
+    margin-top: 0.5rem !important;
+    width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 .backup-btn {
-    font-size: 0.85rem;
-    padding: 0.3rem 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    flex: 1;
+    font-size: 0.85rem !important;
+    padding: 0.3rem 0.7rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.3rem !important;
+    flex: 1 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 /* ===== NOTIFICATIONS ===== */
@@ -641,55 +649,60 @@ header {
     }
 
     header {
-        flex-direction: column-reverse;
-        align-items: center;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
         padding: 10px 0 15px;
         margin-bottom: 1.5rem;
         gap: 15px;
     }
 
     .site-logo {
-        align-items: center;
-        margin-bottom: 15px;
+        align-items: center !important;
+        margin-bottom: 5px !important;
+        order: 0 !important;
+        margin-top: 10px !important;
     }
 
     .header-actions {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        order: 2;
-        max-width: none;
-        margin-top: 15px;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        order: 1 !important;
+        max-width: none !important;
+        margin-top: 10px !important;
     }
 
     #add-device {
-        width: 100%;
+        width: 100% !important;
     }
 
     .logo-wrapper {
-        flex-direction: row;
-        align-items: center;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .site-logo-text {
-        align-items: center;
+        align-items: center !important;
+        text-align: center !important;
     }
 
     .logo-name {
-        font-size: 1.8rem;
-        text-align: center;
-        padding-right: 0;
-        margin-bottom: 0;
+        font-size: 1.8rem !important;
+        text-align: center !important;
+        padding-right: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     .logo-en-name {
-        font-size: 0.9rem;
-        text-align: center;
+        font-size: 0.9rem !important;
+        text-align: center !important;
     }
 
     .version-badge {
-        font-size: 0.8rem;
-        text-align: center;
+        font-size: 0.8rem !important;
+        text-align: center !important;
     }
     
     .search-filter {
@@ -761,6 +774,8 @@ header {
         margin-bottom: 5px !important;
         visibility: visible !important;
         opacity: 1 !important;
+        position: relative !important;
+        z-index: 10 !important;
     }
     
     .backup-btn {
@@ -772,7 +787,7 @@ header {
         visibility: visible !important;
         opacity: 1 !important;
         position: relative !important;
-        z-index: 5 !important;
+        z-index: 10 !important;
         display: flex !important;
     }
     
@@ -857,7 +872,24 @@ header {
     }
 
     .backup-buttons {
-        flex-direction: row;
+        flex-direction: row !important;
+        margin-top: 8px !important;
+    }
+    
+    .backup-btn {
+        font-size: 0.75rem !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+}
+
+/* Landscape mode for mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+    .backup-buttons {
+        margin-top: 8px !important;
+    }
+    
+    .backup-btn {
+        height: 36px !important;
     }
 }
 
