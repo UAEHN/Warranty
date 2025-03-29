@@ -702,6 +702,8 @@ function ensureBackupButtonsVisibility() {
     const backupButtons = document.querySelector('.backup-buttons');
     const exportBtn = document.getElementById('export-data');
     const importBtn = document.getElementById('import-data');
+    const siteLogo = document.querySelector('.site-logo');
+    const headerActions = document.querySelector('.header-actions');
     
     if (backupButtons) {
         backupButtons.style.display = 'flex';
@@ -760,19 +762,44 @@ function ensureBackupButtonsVisibility() {
         }
     }
     
-    // Mover los botones de backup después del botón de añadir en el DOM si es necesario
-    const headerActions = document.querySelector('.header-actions');
-    const addDeviceBtn = document.getElementById('add-device');
-    
-    if (headerActions && backupButtons && addDeviceBtn) {
-        // Asegurarse de que los botones de backup estén después del botón de añadir
-        headerActions.appendChild(addDeviceBtn);
-        headerActions.appendChild(backupButtons);
+    // ضمان ظهور الشعار والأزرار بالترتيب الصحيح على الهواتف
+    if (window.innerWidth <= 768) {
+        if (siteLogo) {
+            siteLogo.style.order = '1';
+            siteLogo.style.marginBottom = '10px';
+        }
+        
+        if (headerActions) {
+            headerActions.style.order = '2';
+            headerActions.style.width = '100%';
+        }
     }
 }
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
+
+// دالة لضبط ترتيب العناصر في الهاتف
+function setCorrectOrderForMobile() {
+    const siteLogo = document.querySelector('.site-logo');
+    const headerActions = document.querySelector('.header-actions');
+    
+    if (window.innerWidth <= 768) {
+        if (siteLogo) {
+            siteLogo.style.order = '1';
+            siteLogo.style.marginBottom = '10px';
+        }
+        
+        if (headerActions) {
+            headerActions.style.order = '2';
+            headerActions.style.width = '100%';
+        }
+    }
+}
+
+// تنفيذ الدالة عند تحميل الصفحة أو تغيير حجم النافذة
+window.addEventListener('DOMContentLoaded', setCorrectOrderForMobile);
+window.addEventListener('resize', setCorrectOrderForMobile);
 
 // Asegurar que los botones de backup estén siempre visibles, incluso si PWA interfiere
 (function() {
@@ -782,6 +809,8 @@ document.addEventListener('DOMContentLoaded', init);
         const backupButtons = document.querySelector('.backup-buttons');
         const exportBtn = document.getElementById('export-data');
         const importBtn = document.getElementById('import-data');
+        const siteLogo = document.querySelector('.site-logo');
+        const headerActions = document.querySelector('.header-actions');
         
         if (backupButtons) {
             backupButtons.style.display = 'flex';
@@ -803,6 +832,17 @@ document.addEventListener('DOMContentLoaded', init);
             importBtn.style.opacity = '1';
             importBtn.style.zIndex = '9999';
         }
+        
+        // ضبط ترتيب العناصر في الهاتف
+        if (window.innerWidth <= 768) {
+            if (siteLogo) {
+                siteLogo.style.order = '1';
+            }
+            
+            if (headerActions) {
+                headerActions.style.order = '2';
+            }
+        }
     } catch (e) {
         console.error('Error pre-initializing backup buttons:', e);
     }
@@ -811,6 +851,7 @@ document.addEventListener('DOMContentLoaded', init);
     document.addEventListener('readystatechange', function() {
         if (document.readyState === 'interactive' || document.readyState === 'complete') {
             ensureBackupButtonsVisibility();
+            setCorrectOrderForMobile();
         }
     });
 })(); 

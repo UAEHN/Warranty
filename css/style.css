@@ -653,31 +653,33 @@ header {
     .container {
         width: 100%;
         padding: 10px;
-        position: relative !important; /* إضافة موضع نسبي للحاوية */
-        z-index: 995 !important; /* أعلى من نافذة التثبيت ولكن أقل من الأزرار */
+        position: relative !important;
+        z-index: 995 !important;
     }
 
     header {
-        flex-direction: column-reverse;
+        flex-direction: column;
         align-items: center;
         padding: 10px 0 15px;
         margin-bottom: 1.5rem;
         gap: 15px;
-        position: relative !important; /* إضافة موضع نسبي للرأس */
-        z-index: 996 !important; /* أعلى من نافذة التثبيت والحاوية */
+        position: relative !important;
+        z-index: 996 !important;
     }
 
     .site-logo {
         align-items: center;
         margin-bottom: 15px;
+        order: 1;
     }
 
     .header-actions {
         position: relative !important;
-        z-index: 997 !important; /* أعلى من نافذة التثبيت والحاوية والرأس */
+        z-index: 997 !important;
         min-height: 100px !important;
         padding-bottom: 10px !important;
         width: 100% !important;
+        order: 2;
     }
 
     #add-device {
@@ -815,6 +817,16 @@ header {
         height: 40px;
     }
     
+    .site-logo {
+        order: 1 !important; /* جعل الشعار أولاً */
+        margin-bottom: 10px !important;
+    }
+    
+    .header-actions {
+        order: 2 !important; /* جعل الأزرار بعد الشعار */
+        min-height: auto !important;
+    }
+    
     .device-name {
         font-size: 1.1rem;
     }
@@ -873,14 +885,21 @@ header {
     .backup-buttons {
         flex-direction: row !important;
         margin-top: 8px !important;
-        z-index: 100 !important;
+        z-index: 9999 !important; /* زيادة z-index للتأكد من الظهور */
         min-height: 38px !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     .backup-btn {
         font-size: 0.75rem !important;
         padding: 0.25rem 0.5rem !important;
         min-height: 36px !important;
+        z-index: 9999 !important; /* زيادة z-index للتأكد من الظهور */
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 }
 
