@@ -1,23 +1,23 @@
-const CACHE_NAME = 'warranty-cache-v1';
+const CACHE_NAME = 'warranty-cache-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/css/pwa.css',
-  '/js/app.js',
-  '/js/pwa.js',
-  '/manifest.json',
-  '/offline.html',
-  '/img/icon-192x192.png',
-  '/img/icon-512x512.png',
-  '/img/icon-152x152.png',
-  '/img/icon-167x167.png',
-  '/img/icon-180x180.png',
-  '/img/splash-2048x2732.png',
-  '/img/splash-1668x2388.png',
-  '/img/splash-1536x2048.png',
-  '/img/splash-1125x2436.png',
-  '/img/splash-1242x2688.png',
+  './',
+  './index.html',
+  './css/style.css',
+  './css/pwa.css',
+  './js/app.js',
+  './js/pwa.js',
+  './manifest.json',
+  './offline.html',
+  './img/icon-192x192.png',
+  './img/icon-512x512.png',
+  './img/icon-152x152.png',
+  './img/icon-167x167.png',
+  './img/icon-180x180.png',
+  './img/splash-2048x2732.png',
+  './img/splash-1668x2388.png',
+  './img/splash-1536x2048.png',
+  './img/splash-1125x2436.png',
+  './img/splash-1242x2688.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap'
 ];
@@ -31,6 +31,8 @@ self.addEventListener('install', (event) => {
         return cache.addAll(urlsToCache);
       })
   );
+  // Force the waiting service worker to become the active service worker
+  self.skipWaiting();
 });
 
 // Activate the service worker and clean up old caches
@@ -45,12 +47,22 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
+    }).then(() => {
+      // Take control of all clients immediately
+      return self.clients.claim();
     })
   );
 });
 
 // Fetch resources from cache first, then network
 self.addEventListener('fetch', (event) => {
+  // Skip cross-origin requests
+  if (!event.request.url.startsWith(self.location.origin) && 
+      !event.request.url.startsWith('https://cdnjs.cloudflare.com') && 
+      !event.request.url.startsWith('https://fonts.googleapis.com')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -83,7 +95,7 @@ self.addEventListener('fetch', (event) => {
           .catch(() => {
             // If fetch fails, show the offline page for navigation requests
             if (event.request.mode === 'navigate') {
-              return caches.match('/offline.html');
+              return caches.match('./offline.html');
             }
             
             // Return empty response for other types of requests

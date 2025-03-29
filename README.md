@@ -1,6 +1,30 @@
-# ضمان | Warranty
+# تطبيق ضمان | Warranty App
 
-تطبيق بسيط لإدارة ضمانات أجهزتك الإلكترونية والاحتفاظ بمعلومات الشراء وغيرها من البيانات المهمة.
+تطبيق ويب تقدمي (PWA) لتتبع وإدارة ضمانات الأجهزة الإلكترونية. يمكن تثبيت التطبيق على الهاتف المحمول ويعمل بدون اتصال بالإنترنت.
+
+## المميزات
+
+- تخزين معلومات ضمانات الأجهزة
+- حفظ تواريخ الشراء وتواريخ انتهاء الضمان
+- تذكير قبل انتهاء الضمان
+- عرض معلومات الضمان بطريقة سهلة ومنظمة
+- إمكانية العمل بدون إنترنت
+- إمكانية تثبيت التطبيق على الجوال والحاسب
+
+---
+
+# Warranty App | تطبيق ضمان
+
+A Progressive Web App (PWA) for tracking and managing electronic device warranties. The app can be installed on mobile phones and works offline.
+
+## Features
+
+- Store warranty information for devices
+- Save purchase dates and warranty expiration dates
+- Remind before warranty expiration
+- Display warranty information in an easy and organized way
+- Ability to work offline
+- Can be installed on mobile and PC
 
 ## المميزات
 

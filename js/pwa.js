@@ -1,7 +1,7 @@
 // Register the service worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then((registration) => {
         console.log('Service Worker registered with scope:', registration.scope);
       })
@@ -51,7 +51,7 @@ function showTopInstallPrompt() {
   installPrompt.className = 'pwa-install-prompt';
   installPrompt.innerHTML = `
     <div class="pwa-install-prompt-content">
-      <img src="img/icon-192x192.png" alt="تطبيق ضمان" class="pwa-app-icon">
+      <img src="./img/icon-192x192.png" alt="تطبيق ضمان" class="pwa-app-icon">
       <div class="pwa-install-prompt-text">
         <h3>تثبيت تطبيق ضمان</h3>
         <p>قم بتثبيت التطبيق للوصول السريع وإمكانية العمل بدون إنترنت</p>
