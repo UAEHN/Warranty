@@ -570,7 +570,7 @@ header {
     visibility: visible !important;
     opacity: 1 !important;
     position: relative !important;
-    z-index: 100 !important;
+    z-index: 9999 !important; /* أعلى من نافذة التثبيت */
     pointer-events: auto !important;
 }
 
@@ -585,12 +585,13 @@ header {
     visibility: visible !important;
     opacity: 1 !important;
     position: relative !important;
-    z-index: 100 !important;
+    z-index: 9999 !important;
     min-height: 38px !important;
     border: 1px solid var(--border-color) !important;
     background-color: white !important;
     color: var(--text-color) !important;
     pointer-events: auto !important;
+    cursor: pointer !important;
 }
 
 /* ===== NOTIFICATIONS ===== */
@@ -652,6 +653,8 @@ header {
     .container {
         width: 100%;
         padding: 10px;
+        position: relative !important; /* إضافة موضع نسبي للحاوية */
+        z-index: 995 !important; /* أعلى من نافذة التثبيت ولكن أقل من الأزرار */
     }
 
     header {
@@ -660,6 +663,8 @@ header {
         padding: 10px 0 15px;
         margin-bottom: 1.5rem;
         gap: 15px;
+        position: relative !important; /* إضافة موضع نسبي للرأس */
+        z-index: 996 !important; /* أعلى من نافذة التثبيت والحاوية */
     }
 
     .site-logo {
@@ -669,9 +674,10 @@ header {
 
     .header-actions {
         position: relative !important;
-        z-index: 50 !important;
+        z-index: 997 !important; /* أعلى من نافذة التثبيت والحاوية والرأس */
         min-height: 100px !important;
         padding-bottom: 10px !important;
+        width: 100% !important;
     }
 
     #add-device {
@@ -768,7 +774,7 @@ header {
     .backup-buttons {
         margin-top: 10px !important;
         margin-bottom: 5px !important;
-        z-index: 100 !important;
+        z-index: 9999 !important;
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -781,7 +787,7 @@ header {
         font-size: 0.8rem !important;
         white-space: nowrap !important;
         position: relative !important;
-        z-index: 100 !important;
+        z-index: 9999 !important;
     }
     
     .notification {

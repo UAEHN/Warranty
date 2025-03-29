@@ -27,7 +27,9 @@ window.addEventListener('beforeinstallprompt', (e) => {
   addBtn.style.display = 'block';
   
   // Show installation banner (نافذة التثبيت العلوية)
-  showTopInstallPrompt();
+  setTimeout(() => {
+    showTopInstallPrompt();
+  }, 1000); // تأخير لضمان تحميل العناصر الأخرى أولاً
 });
 
 function showTopInstallPrompt() {
@@ -49,6 +51,7 @@ function showTopInstallPrompt() {
   // إنشاء نافذة التثبيت الجديدة التي تطابق الصورة المرفقة
   const installPrompt = document.createElement('div');
   installPrompt.className = 'pwa-install-prompt';
+  installPrompt.style.zIndex = '990'; // تعيين z-index بشكل صريح
   installPrompt.innerHTML = `
     <div class="pwa-install-prompt-content">
       <img src="./img/icon-192x192.png" alt="تطبيق ضمان" class="pwa-app-icon">
@@ -57,19 +60,50 @@ function showTopInstallPrompt() {
         <p>قم بتثبيت التطبيق للوصول السريع وإمكانية العمل بدون إنترنت</p>
       </div>
     </div>
-    <button id="pwa-install-btn" class="pwa-install-btn">تثبيت</button>
-    <button id="pwa-install-close" class="pwa-install-prompt-close">×</button>
+    <button id="pwa-install-btn" class="pwa-install-btn" style="pointer-events: auto !important; cursor: pointer !important;">تثبيت</button>
+    <button id="pwa-install-close" class="pwa-install-prompt-close" style="pointer-events: auto !important; cursor: pointer !important;">×</button>
   `;
-  
+
+  // إضافة النافذة في بداية body
   document.body.prepend(installPrompt);
   
-  // إضافة مستمعي الأحداث للأزرار
-  document.getElementById('pwa-install-btn').addEventListener('click', installApp);
-  document.getElementById('pwa-install-close').addEventListener('click', () => {
-    installPrompt.remove();
-    // احفظ وقت الإغلاق في التخزين المحلي
-    localStorage.setItem('pwa-install-prompt-closed', Date.now());
-  });
+  // تعديل طريقة عرض المحتوى لمنع التداخل مع النافذة
+  const container = document.querySelector('.container');
+  if (container) {
+    container.style.marginTop = '80px';
+  }
+  
+  // إضافة مستمعي الأحداث للأزرار مع تأخير لضمان تحميل العناصر
+  setTimeout(() => {
+    const installBtn = document.getElementById('pwa-install-btn');
+    const closeBtn = document.getElementById('pwa-install-close');
+    
+    if (installBtn) {
+      // إزالة مستمع الحدث السابق إن وجد ثم إضافة مستمع جديد
+      installBtn.removeEventListener('click', installApp);
+      installBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Install button clicked');
+        installApp();
+      });
+    }
+    
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Close button clicked');
+        installPrompt.remove();
+        // تعديل margin بعد إغلاق النافذة
+        if (container) {
+          container.style.marginTop = '0';
+        }
+        // احفظ وقت الإغلاق في التخزين المحلي
+        localStorage.setItem('pwa-install-prompt-closed', Date.now());
+      });
+    }
+  }, 100);
 }
 
 function showInstallBanner() {
@@ -99,7 +133,12 @@ function showInstallBanner() {
 }
 
 function installApp() {
+  console.log('Installing app, deferredPrompt:', deferredPrompt);
+  
   if (!deferredPrompt) {
+    console.log('No deferred prompt available');
+    // إظهار رسالة للمستخدم
+    alert('لا يمكن تثبيت التطبيق في هذا الوقت. يرجى المحاولة مرة أخرى لاحقًا أو استخدام خيار "إضافة إلى الشاشة الرئيسية" من قائمة المتصفح.');
     return;
   }
   
@@ -107,18 +146,32 @@ function installApp() {
   deferredPrompt.prompt();
   
   // Wait for the user to respond to the prompt
-  deferredPrompt.userChoice.then((choiceResult) => {
-    if (choiceResult.outcome === 'accepted') {
-      console.log('User accepted the PWA installation');
-      // Remove any install prompts
-      const banner = document.querySelector('.install-banner');
-      if (banner) banner.remove();
-      const topPrompt = document.querySelector('.pwa-install-prompt');
-      if (topPrompt) topPrompt.remove();
-    } else {
-      console.log('User dismissed the PWA installation');
-    }
-    // Clear the deferredPrompt so it can be garbage collected
-    deferredPrompt = null;
-  });
+  deferredPrompt.userChoice
+    .then((choiceResult) => {
+      console.log('User choice result:', choiceResult.outcome);
+      
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the PWA installation');
+        // Remove any install prompts
+        const banner = document.querySelector('.install-banner');
+        if (banner) banner.remove();
+        const topPrompt = document.querySelector('.pwa-install-prompt');
+        if (topPrompt) topPrompt.remove();
+        
+        // تعديل margin بعد تثبيت التطبيق
+        const container = document.querySelector('.container');
+        if (container) {
+          container.style.marginTop = '0';
+        }
+      } else {
+        console.log('User dismissed the PWA installation');
+      }
+      // Clear the deferredPrompt so it can be garbage collected
+      deferredPrompt = null;
+    })
+    .catch(error => {
+      console.error('Error with installation prompt:', error);
+      // إظهار رسالة خطأ للمستخدم
+      alert('حدث خطأ أثناء محاولة تثبيت التطبيق. يرجى المحاولة مرة أخرى لاحقًا.');
+    });
 } 
