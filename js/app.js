@@ -22,6 +22,9 @@ let deleteDeviceId = null;
 
 // Initialize app
 function init() {
+    // Asegurarse de que los botones de backup sean visibles inmediatamente
+    ensureBackupButtonsVisibility();
+    
     // ضبط ارتفاع شاشة الجوال
     setMobileViewportHeight();
     window.addEventListener('resize', setMobileViewportHeight);
@@ -56,9 +59,9 @@ function init() {
     });
     if (importFile) importFile.addEventListener('change', importData);
     
-    // ضمان ظهور أزرار التصدير والاستيراد في الهاتف
-    ensureBackupButtonsVisibility();
+    // Comprobar periódicamente la visibilidad de los botones (por si acaso un cambio en la interfaz los oculta)
     window.addEventListener('resize', ensureBackupButtonsVisibility);
+    setInterval(ensureBackupButtonsVisibility, 1000); // Comprobar cada segundo
 }
 
 // إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
@@ -704,20 +707,110 @@ function ensureBackupButtonsVisibility() {
         backupButtons.style.display = 'flex';
         backupButtons.style.visibility = 'visible';
         backupButtons.style.opacity = '1';
+        backupButtons.style.zIndex = '9999';
+        backupButtons.style.position = 'relative';
+        backupButtons.style.pointerEvents = 'auto';
+        
+        // Asegurarse de que esté en la capa superior para dispositivos móviles
+        if (window.innerWidth <= 768) {
+            // Forzar la visibilidad en dispositivos móviles
+            backupButtons.style.width = '100%';
+            backupButtons.style.marginTop = '10px';
+            backupButtons.style.marginBottom = '5px';
+        }
     }
     
     if (exportBtn) {
         exportBtn.style.display = 'flex';
         exportBtn.style.visibility = 'visible';
         exportBtn.style.opacity = '1';
+        exportBtn.style.zIndex = '9999';
+        exportBtn.style.position = 'relative';
+        exportBtn.style.pointerEvents = 'auto';
+        exportBtn.style.backgroundColor = 'white';
+        exportBtn.style.border = '1px solid var(--border-color)';
+        exportBtn.style.minHeight = '38px';
+        
+        // Forzar la visibilidad en dispositivos móviles
+        if (window.innerWidth <= 768) {
+            exportBtn.style.flex = '1';
+            exportBtn.style.padding = '0.3rem 0.5rem';
+            exportBtn.style.fontSize = '0.8rem';
+            exportBtn.style.whiteSpace = 'nowrap';
+        }
     }
     
     if (importBtn) {
         importBtn.style.display = 'flex';
         importBtn.style.visibility = 'visible';
         importBtn.style.opacity = '1';
+        importBtn.style.zIndex = '9999';
+        importBtn.style.position = 'relative';
+        importBtn.style.pointerEvents = 'auto';
+        importBtn.style.backgroundColor = 'white';
+        importBtn.style.border = '1px solid var(--border-color)';
+        importBtn.style.minHeight = '38px';
+        
+        // Forzar la visibilidad en dispositivos móviles
+        if (window.innerWidth <= 768) {
+            importBtn.style.flex = '1';
+            importBtn.style.padding = '0.3rem 0.5rem';
+            importBtn.style.fontSize = '0.8rem';
+            importBtn.style.whiteSpace = 'nowrap';
+        }
+    }
+    
+    // Mover los botones de backup después del botón de añadir en el DOM si es necesario
+    const headerActions = document.querySelector('.header-actions');
+    const addDeviceBtn = document.getElementById('add-device');
+    
+    if (headerActions && backupButtons && addDeviceBtn) {
+        // Asegurarse de que los botones de backup estén después del botón de añadir
+        headerActions.appendChild(addDeviceBtn);
+        headerActions.appendChild(backupButtons);
     }
 }
 
 // Initialize app when DOM is loaded
-document.addEventListener('DOMContentLoaded', init); 
+document.addEventListener('DOMContentLoaded', init);
+
+// Asegurar que los botones de backup estén siempre visibles, incluso si PWA interfiere
+(function() {
+    // Ejecutar inmediatamente para garantizar visibilidad incluso antes de DOMContentLoaded
+    try {
+        // Función simplificada que se ejecuta de inmediato
+        const backupButtons = document.querySelector('.backup-buttons');
+        const exportBtn = document.getElementById('export-data');
+        const importBtn = document.getElementById('import-data');
+        
+        if (backupButtons) {
+            backupButtons.style.display = 'flex';
+            backupButtons.style.visibility = 'visible';
+            backupButtons.style.opacity = '1';
+            backupButtons.style.zIndex = '9999';
+        }
+        
+        if (exportBtn) {
+            exportBtn.style.display = 'flex';
+            exportBtn.style.visibility = 'visible';
+            exportBtn.style.opacity = '1';
+            exportBtn.style.zIndex = '9999';
+        }
+        
+        if (importBtn) {
+            importBtn.style.display = 'flex';
+            importBtn.style.visibility = 'visible';
+            importBtn.style.opacity = '1';
+            importBtn.style.zIndex = '9999';
+        }
+    } catch (e) {
+        console.error('Error pre-initializing backup buttons:', e);
+    }
+    
+    // También ejecutar cuando el DOM esté parcialmente cargado
+    document.addEventListener('readystatechange', function() {
+        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+            ensureBackupButtonsVisibility();
+        }
+    });
+})(); 

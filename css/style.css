@@ -570,7 +570,8 @@ header {
     visibility: visible !important;
     opacity: 1 !important;
     position: relative !important;
-    z-index: 10 !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
 }
 
 .backup-btn {
@@ -584,7 +585,12 @@ header {
     visibility: visible !important;
     opacity: 1 !important;
     position: relative !important;
-    z-index: 10 !important;
+    z-index: 100 !important;
+    min-height: 38px !important;
+    border: 1px solid var(--border-color) !important;
+    background-color: white !important;
+    color: var(--text-color) !important;
+    pointer-events: auto !important;
 }
 
 /* ===== NOTIFICATIONS ===== */
@@ -662,12 +668,10 @@ header {
     }
 
     .header-actions {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        order: 2;
-        max-width: none;
-        margin-top: 15px;
+        position: relative !important;
+        z-index: 50 !important;
+        min-height: 100px !important;
+        padding-bottom: 10px !important;
     }
 
     #add-device {
@@ -762,10 +766,13 @@ header {
     }
 
     .backup-buttons {
-        width: 100% !important;
         margin-top: 10px !important;
         margin-bottom: 5px !important;
-        z-index: 10 !important;
+        z-index: 100 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
     }
     
     .backup-btn {
@@ -774,7 +781,7 @@ header {
         font-size: 0.8rem !important;
         white-space: nowrap !important;
         position: relative !important;
-        z-index: 10 !important;
+        z-index: 100 !important;
     }
     
     .notification {
@@ -860,11 +867,14 @@ header {
     .backup-buttons {
         flex-direction: row !important;
         margin-top: 8px !important;
+        z-index: 100 !important;
+        min-height: 38px !important;
     }
     
     .backup-btn {
         font-size: 0.75rem !important;
         padding: 0.25rem 0.5rem !important;
+        min-height: 36px !important;
     }
 }
 
@@ -872,6 +882,7 @@ header {
 @media (max-width: 896px) and (orientation: landscape) {
     .backup-buttons {
         margin-top: 8px !important;
+        z-index: 100 !important;
     }
     
     .backup-btn {
