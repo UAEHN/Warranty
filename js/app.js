@@ -45,45 +45,17 @@ function init() {
     searchInput.addEventListener('input', filterDevices);
     sortBySelect.addEventListener('change', sortDevices);
 
-    // إضافة زر النسخ الاحتياطي واستيراد البيانات إلى العنوان
-    addBackupButtons();
-}
-
-// إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
-function addBackupButtons() {
-    // إنشاء زر النسخ الاحتياطي
-    const backupBtnContainer = document.createElement('div');
-    backupBtnContainer.className = 'backup-buttons';
-    
-    backupBtnContainer.innerHTML = `
-        <button id="export-data" class="btn-secondary backup-btn"><i class="fas fa-download"></i> تصدير البيانات</button>
-        <button id="import-data" class="btn-secondary backup-btn"><i class="fas fa-upload"></i> استيراد البيانات</button>
-        <input type="file" id="import-file" accept=".json" style="display: none;">
-    `;
-    
-    // إضافة الأزرار إلى عنصر header-actions
-    const headerActions = document.querySelector('.header-actions');
-    if (headerActions) {
-        headerActions.appendChild(backupBtnContainer);
-    } else {
-        // في حالة لم يتم العثور على عنصر header-actions، استخدم السلوك البديل
-        const addDeviceBtn = document.getElementById('add-device');
-        if (addDeviceBtn && addDeviceBtn.parentNode) {
-            addDeviceBtn.parentNode.insertBefore(backupBtnContainer, addDeviceBtn.nextSibling);
-        } else {
-            const header = document.querySelector('header');
-            if (header) {
-                header.appendChild(backupBtnContainer);
-            }
-        }
-    }
-    
-    // إضافة مستمعي الأحداث للأزرار
+    // إضافة مستمعي الأحداث لأزرار النسخ الاحتياطي
     document.getElementById('export-data').addEventListener('click', exportData);
     document.getElementById('import-data').addEventListener('click', () => {
         document.getElementById('import-file').click();
     });
     document.getElementById('import-file').addEventListener('change', importData);
+}
+
+// إضافة أزرار النسخ الاحتياطي وإستيراد البيانات
+function addBackupButtons() {
+    // تم نقل هذه الوظيفة إلى HTML مباشرة
 }
 
 // تصدير البيانات

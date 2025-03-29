@@ -35,7 +35,11 @@
         <header>
             <div class="header-actions">
                 <button id="add-device" class="btn-primary"><i class="fas fa-plus"></i> إضافة جهاز جديد</button>
-                <!-- أزرار النسخ الاحتياطي ستضاف هنا عن طريق JavaScript -->
+                <div class="backup-buttons">
+                    <button id="export-data" class="btn-secondary backup-btn"><i class="fas fa-download"></i> تصدير البيانات</button>
+                    <button id="import-data" class="btn-secondary backup-btn"><i class="fas fa-upload"></i> استيراد البيانات</button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                </div>
             </div>
             <div class="site-logo">
                 <div class="logo-wrapper">
