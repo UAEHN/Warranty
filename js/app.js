@@ -61,9 +61,22 @@ function addBackupButtons() {
         <input type="file" id="import-file" accept=".json" style="display: none;">
     `;
     
-    // إضافة الأزرار إلى العنوان
-    const header = document.querySelector('header');
-    header.appendChild(backupBtnContainer);
+    // إضافة الأزرار إلى عنصر header-actions
+    const headerActions = document.querySelector('.header-actions');
+    if (headerActions) {
+        headerActions.appendChild(backupBtnContainer);
+    } else {
+        // في حالة لم يتم العثور على عنصر header-actions، استخدم السلوك البديل
+        const addDeviceBtn = document.getElementById('add-device');
+        if (addDeviceBtn && addDeviceBtn.parentNode) {
+            addDeviceBtn.parentNode.insertBefore(backupBtnContainer, addDeviceBtn.nextSibling);
+        } else {
+            const header = document.querySelector('header');
+            if (header) {
+                header.appendChild(backupBtnContainer);
+            }
+        }
+    }
     
     // إضافة مستمعي الأحداث للأزرار
     document.getElementById('export-data').addEventListener('click', exportData);
