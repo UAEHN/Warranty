@@ -562,21 +562,29 @@ header {
 
 /* ===== BACKUP BUTTONS ===== */
 .backup-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    width: 100%;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 0.5rem !important;
+    margin-top: 0.5rem !important;
+    width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 .backup-btn {
-    font-size: 0.85rem;
-    padding: 0.3rem 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.3rem;
-    flex: 1;
+    font-size: 0.85rem !important;
+    padding: 0.3rem 0.7rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.3rem !important;
+    flex: 1 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 /* ===== NOTIFICATIONS ===== */
@@ -754,26 +762,19 @@ header {
     }
 
     .backup-buttons {
-        display: flex !important;
-        flex-direction: row !important;
         width: 100% !important;
         margin-top: 10px !important;
         margin-bottom: 5px !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        z-index: 10 !important;
     }
     
     .backup-btn {
-        flex: 1 !important;
         height: 38px !important;
         padding: 0.3rem 0.5rem !important;
         font-size: 0.8rem !important;
         white-space: nowrap !important;
-        visibility: visible !important;
-        opacity: 1 !important;
         position: relative !important;
-        z-index: 5 !important;
-        display: flex !important;
+        z-index: 10 !important;
     }
     
     .notification {
@@ -857,7 +858,24 @@ header {
     }
 
     .backup-buttons {
-        flex-direction: row;
+        flex-direction: row !important;
+        margin-top: 8px !important;
+    }
+    
+    .backup-btn {
+        font-size: 0.75rem !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+}
+
+/* Landscape mode for mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+    .backup-buttons {
+        margin-top: 8px !important;
+    }
+    
+    .backup-btn {
+        height: 36px !important;
     }
 }
 
